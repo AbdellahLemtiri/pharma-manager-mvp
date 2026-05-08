@@ -4,11 +4,13 @@ import axiosInstance from '../api/axiosConfig';
 import { Search, Plus, Edit2, Trash2, AlertTriangle, CheckCircle2, PackageSearch, Filter, X, Pill } from 'lucide-react';
 
 const MedicamentsPage = () => {
-     const [medicaments, setMedicaments] = useState([]);
+
+
+    const [medicaments, setMedicaments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
 
-     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [submitLoading, setSubmitLoading] = useState(false);
     const [newMed, setNewMed] = useState({
         nom: '',
@@ -39,10 +41,12 @@ const MedicamentsPage = () => {
         loadMedicaments();
     }, []);
 
+
     const handleAddMedicament = async (e) => {
         e.preventDefault();
         setSubmitLoading(true);
         try {
+
             const payload = {
                 ...newMed,
                 prix_achat: parseFloat(newMed.prix_achat),
@@ -55,12 +59,14 @@ const MedicamentsPage = () => {
             await axiosInstance.post('/medicaments/', payload);
             setIsModalOpen(false);
             
+
             setNewMed({
                 nom: '', dci: '', forme: '', dosage: '', 
                 prix_achat: '', prix_vente: '', stock_actuel: '', 
                 stock_minimum: '', categorie: 1, ordonnance_requise: false
             });
             
+
             loadMedicaments();
         } catch (error) {
             console.error(error);
@@ -70,12 +76,14 @@ const MedicamentsPage = () => {
         }
     };
 
+
     const filteredMedicaments = medicaments.filter(med => 
         med.nom.toLowerCase().includes(searchTerm.toLowerCase()) || 
         med.dci?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
 
+    
     const getStockBadge = (actuel, minimum) => {
         if (actuel === 0) {
             return <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold"><AlertTriangle size={12}/> Rupture</span>;

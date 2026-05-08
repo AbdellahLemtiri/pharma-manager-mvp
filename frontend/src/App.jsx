@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/common/Layout';
 import DashboardPage from './pages/DashboardPage';
@@ -5,17 +6,23 @@ import MedicamentsPage from './pages/MedicamentsPage';
 import VentesPage from './pages/VentesPage';
 import AuthPage from './pages/AuthPage';
 
-function App() {
-  const isAuthenticated = !!localStorage.getItem('access_token');
+  const ProtectedRoute = ({ children }) => {
+    const isAuthenticated = !!localStorage.getItem('access_token');
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
+    }
+    return <Layout>{children}</Layout>;
+};
 
+function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={!isAuthenticated ? <AuthPage /> : <Navigate to="/" />} />
+         <Route path="/login" element={<AuthPage />} />
         
-         <Route path="/" element={<Layout><DashboardPage /></Layout>} />
-        <Route path="/medicaments" element={<Layout><MedicamentsPage /></Layout>} />
-        <Route path="/ventes" element={<Layout><VentesPage /></Layout>} />
+         <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+        <Route path="/medicaments" element={<ProtectedRoute><MedicamentsPage /></ProtectedRoute>} />
+        <Route path="/ventes" element={<ProtectedRoute><VentesPage /></ProtectedRoute>} />
       </Routes>
     </Router>
   );
