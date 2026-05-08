@@ -28,8 +28,12 @@ INSTALLED_APPS = [
     # Third party apps
     'rest_framework',
     'drf_spectacular',
-    'corsheaders', # [cite: 172] ضروري باش نقبلو طلبات من React
+    'corsheaders',  
     
+    #instaled 
+
+    'django_filters',
+
     # Local apps
     'categories',
     'medicaments',
@@ -78,8 +82,20 @@ DATABASES = {
     }
 }
 
+
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+
+
+
+
 # Configuration CORS [cite: 172]
-CORS_ALLOW_ALL_ORIGINS = True # فالتست مسموح باش نسهلو الربط
+# !!!
+CORS_ALLOW_ALL_ORIGINS = True  
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -100,10 +116,18 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Swagger & DRF Settings [cite: 9, 188-189, 258-276]
+
+
+
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'config.pagination.CustomPagination',
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
 }
-
 SPECTACULAR_SETTINGS = {
     'TITLE': 'PharmaManager API',
     'DESCRIPTION': 'API de gestion de pharmacie. Développé avec SMARTHOLOL standards',

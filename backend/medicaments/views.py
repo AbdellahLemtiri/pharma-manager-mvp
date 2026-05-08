@@ -2,6 +2,8 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import F
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from .models import Medicament
 from .serializers import MedicamentSerializer
@@ -11,6 +13,13 @@ class MedicamentViewSet(viewsets.ModelViewSet):
     # N'afficher que les médicaments actifs
     queryset = Medicament.objects.filter(est_actif=True).order_by('nom')
     serializer_class = MedicamentSerializer
+
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['categorie', 'ordonnance_requise', 'forme']  
+    search_fields = ['nom', 'dci']  
+    ordering_fields = ['prix_vente', 'stock_actuel'] 
+
+
 
     def perform_destroy(self, instance):
         """Soft delete: marque le médicament comme inactif au lieu de le supprimer."""
