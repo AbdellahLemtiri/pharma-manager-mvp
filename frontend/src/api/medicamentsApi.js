@@ -14,3 +14,4 @@ export const createMedicament = async (data) => {
   const response = await axiosInstance.post('/medicaments/', data);
   return response.data;
 };
+    
