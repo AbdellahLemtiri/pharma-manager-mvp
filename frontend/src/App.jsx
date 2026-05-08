@@ -1,37 +1,21 @@
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Layout from './components/common/Layout';
 import DashboardPage from './pages/DashboardPage';
 import MedicamentsPage from './pages/MedicamentsPage';
 import VentesPage from './pages/VentesPage';
 import AuthPage from './pages/AuthPage';
-
-
-const LogoutButton = () => {
-    const navigate = useNavigate();
-    const handleLogout = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        navigate('/login');
-    };
-    return <button onClick={handleLogout} style={{ background: 'red', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>Déconnexion</button>;
-};
 
 function App() {
   const isAuthenticated = !!localStorage.getItem('access_token');
 
   return (
     <Router>
-      <nav style={{ padding: '20px', background: '#2c3e50', color: 'white', display: 'flex', gap: '20px', alignItems: 'center' }}>
-        <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>Dashboard</Link>
-        <Link to="/medicaments" style={{ color: 'white', textDecoration: 'none' }}>Inventaire</Link>
-        <Link to="/ventes" style={{ color: 'white', textDecoration: 'none' }}>Ventes</Link>
-        {isAuthenticated ? <LogoutButton /> : <Link to="/login" style={{ color: 'white', textDecoration: 'none', marginLeft: 'auto' }}>Login</Link>}
-      </nav>
-
       <Routes>
-        <Route path="/login" element={<AuthPage />} />
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="/medicaments" element={<MedicamentsPage />} />
-        <Route path="/ventes" element={<VentesPage />} />
+        <Route path="/login" element={!isAuthenticated ? <AuthPage /> : <Navigate to="/" />} />
+        
+         <Route path="/" element={<Layout><DashboardPage /></Layout>} />
+        <Route path="/medicaments" element={<Layout><MedicamentsPage /></Layout>} />
+        <Route path="/ventes" element={<Layout><VentesPage /></Layout>} />
       </Routes>
     </Router>
   );
