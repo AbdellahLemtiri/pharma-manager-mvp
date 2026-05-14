@@ -5,8 +5,7 @@ import axiosInstance from '../api/axiosConfig';
 import { Search, Plus, Filter, ShoppingCart, XCircle, CheckCircle2, ReceiptText, AlertCircle, X } from 'lucide-react';
 
 const VentesPage = () => {
-    // States ديال المبيعات
-    const [ventes, setVentes] = useState([]);
+     const [ventes, setVentes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     
