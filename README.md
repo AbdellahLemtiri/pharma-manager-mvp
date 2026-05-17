@@ -22,11 +22,11 @@ Une application web full-stack de gestion de pharmacie, développée dans le cad
 
 ### DevOps & Outils
 * **Conteneurisation:** Docker & Docker Compose
-* **Versionnement:** Git (Clean commits)
+* **Versionnement:** Git 
 
 ---
 
-##  Bonus Réalisés (100% Complétés)
+##  Bonus Réalisés  
 
 Conformément au cahier des charges, l'intégralité des fonctionnalités bonus a été implémentée :
 - [x] **:** Tests unitaires sur les views, les serializers et la logique métier de gestion de stock (`Django TestCase`).
